@@ -4,8 +4,6 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   output: 'export',
-  basePath: '/webtool',
-  assetPrefix: '/webtool/',
   trailingSlash: true,
   images: {
     unoptimized: true,
