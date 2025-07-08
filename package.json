@@ -2,6 +2,7 @@
   "name": "webtool",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://asruldev.github.io/webtool",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
