@@ -7,8 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "postbuild": "node scripts/move-assets.js",
     "predeploy": "next build",
-    "deploy": "gh-pages -d out"
+    "deploy": "gh-pages -d out",
+    "deploy-only": "node scripts/deploy-only.js",
+    "force-deploy": "node scripts/force-deploy.js"
   },
   "dependencies": {
     "next": "15.3.5",

@@ -5,8 +5,13 @@ const nextConfig = {
   },
   output: 'export',
   trailingSlash: true,
+  basePath: '/webtool',
   images: {
     unoptimized: true,
+  },
+  experimental: {
+    // Make builds more deterministic
+    optimizePackageImports: ['react-icons'],
   },
 };
 
