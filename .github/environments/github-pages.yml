@@ -1,0 +1,15 @@
+name: github-pages
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+protection_rules:
+  - required_reviewers: []
+  - required_status_checks: []
+  - deployment_branch_policy:
+      protected_branches: false
+      custom_branch_policies: false 
