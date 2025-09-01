@@ -14,26 +14,36 @@ export function Header() {
   };
 
   // Function to get active styles
-  const getActiveStyles = (path: string, isRegex = false) => {
+  const getActiveStyles = (path: string, isRegex = false, isJWT = false) => {
     const active = isActive(path);
     const baseStyles = "transition-colors relative";
     const activeStyles = isRegex 
       ? "text-pink-600 font-semibold" 
+      : isJWT
+      ? "text-purple-600 font-semibold"
       : "text-blue-600 font-semibold";
     const inactiveStyles = isRegex 
       ? "text-gray-700 hover:text-pink-600" 
+      : isJWT
+      ? "text-gray-700 hover:text-purple-600"
       : "text-gray-700 hover:text-blue-600";
     
     return `${baseStyles} ${active ? activeStyles : inactiveStyles}`;
   };
 
   // Function to get active indicator
-  const getActiveIndicator = (path: string) => {
+  const getActiveIndicator = (path: string, isRegex = false, isJWT = false) => {
     const active = isActive(path);
     if (!active) return null;
     
+    const gradient = isRegex 
+      ? "from-pink-600 to-red-600"
+      : isJWT
+      ? "from-purple-600 to-pink-600"
+      : "from-blue-600 to-purple-600";
+    
     return (
-      <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
+      <div className={`absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r ${gradient} rounded-full`}></div>
     );
   };
 
@@ -65,9 +75,13 @@ export function Header() {
               Tree View
               {getActiveIndicator('/tree-view')}
             </Link>
+            <Link to="/jwt-decoder" className={getActiveStyles('/jwt-decoder', false, true)}>
+              JWT Decoder
+              {getActiveIndicator('/jwt-decoder', false, true)}
+            </Link>
             <Link to="/regex" className={getActiveStyles('/regex', true)}>
               Regex
-              {getActiveIndicator('/regex')}
+              {getActiveIndicator('/regex', true)}
             </Link>
           </nav>
 
@@ -122,6 +136,13 @@ export function Header() {
                 onClick={() => setMobileOpen(false)}
               >
                 Tree View
+              </Link>
+              <Link 
+                to="/jwt-decoder" 
+                className={getActiveStyles('/jwt-decoder', false, true)} 
+                onClick={() => setMobileOpen(false)}
+              >
+                JWT Decoder
               </Link>
               <Link 
                 to="/regex" 

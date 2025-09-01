@@ -1,162 +1,141 @@
-# Web Tools
+# 🛠️ Web Tools - Free Online JSON & Regex Tools
 
-A collection of useful web development tools built with React and Vite.
+A collection of powerful, free online web development tools built with React and Vite. Format JSON, validate syntax, visualize data structures, and test regular expressions with our intuitive tools.
 
-## Features
+## ✨ Features
 
-- **JSON Formatter**: Format, validate, and beautify JSON data
-- **JSON Validator**: Validate JSON syntax and get detailed analysis
-- **JSON Tree View**: Visualize JSON data in an interactive tree structure
-- **Regex Tester**: Test and debug regular expressions interactively
-- **JSON Guide**: Learn JSON with examples and best practices
-- **Regex Guide**: Learn regular expressions with comprehensive examples
+- **🔧 JSON Formatter** - Beautify and minify JSON data with syntax highlighting
+- **✅ JSON Validator** - Validate JSON syntax and get detailed error analysis
+- **🌳 JSON Tree View** - Visualize JSON data in interactive tree structure
+- **🔍 Regex Tester** - Test and debug JavaScript/TypeScript regular expressions
+- **📚 JSON Guide** - Learn JSON with examples and best practices
+- **📖 Regex Guide** - Comprehensive regular expression tutorials
 
+## 🚀 Live Demo
 
-## Tech Stack
+**🌐 Website**: [https://webtool.asrul.dev](https://webtool.asrul.dev)
 
-- **React 19** - UI library
-- **Vite** - Build tool and development server
-- **TypeScript** - Type safety
-- **Tailwind CSS** - Styling
+## 🛠️ Tech Stack
+
+- **React 19** - Modern UI library with hooks
+- **Vite** - Fast build tool and development server
+- **TypeScript** - Type safety and better development experience
+- **Tailwind CSS** - Utility-first CSS framework
 - **React Router** - Client-side routing
 - **Prism.js** - Syntax highlighting
-- **React Icons** - Icon library
+- **React Icons** - Beautiful icon library
 
-## Getting Started
+## 🎯 Key Features
+
+### JSON Tools
+- **Real-time formatting** with customizable indentation
+- **Syntax validation** with detailed error messages
+- **Interactive tree view** with expandable nodes
+- **File upload/download** support
+- **Copy to clipboard** functionality
+- **Sample data** for testing
+
+### Regex Tools
+- **Live regex testing** with JavaScript/TypeScript support
+- **Multiple modes**: Match, Search, Replace
+- **Flag management** (g, i, m, s, u, y)
+- **Match highlighting** and navigation
+- **Error detection** and validation
+- **Comprehensive guides** and examples
+
+## 🚀 Getting Started
 
 ### Prerequisites
-
-- Node.js 18+ 
+- Node.js 18+
 - npm or pnpm
 
 ### Installation
-
-1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/asruldev/webtool.git
 cd webtool
-```
-
-2. Install dependencies:
-```bash
-npm install
-# or
 pnpm install
-```
-
-3. Start the development server:
-```bash
-npm run dev
-# or
 pnpm dev
 ```
 
-4. Open your browser and navigate to `http://localhost:5173`
-
 ### Build for Production
-
 ```bash
-npm run build
-# or
 pnpm build
-```
-
-The built files will be in the `dist` directory.
-
-### Deployment
-
-This project is configured for GitHub Pages deployment with proper SPA routing support.
-
-#### Manual Deployment
-
-```bash
-npm run deploy
-# or
 pnpm deploy
 ```
 
-This will:
-1. Build the project for production
-2. Deploy to the `gh-pages` branch
-3. Make it available at `https://asrulharahap.github.io/webtool`
-
-#### Automated Deployment (GitHub Actions)
-
-The project includes a GitHub Actions workflow that automatically deploys on every push to the `main` branch. To enable this:
-
-1. Go to your repository settings
-2. Navigate to "Pages" in the sidebar
-3. Set the source to "GitHub Actions"
-4. Push to the `main` branch to trigger deployment
-
-#### Configuration Details
-
-- **Base Path**: `/webtool/` (configured in `vite.config.ts`)
-- **Router Basename**: `/webtool` (configured in `src/main.tsx`)
-- **SPA Routing**: Handled by `public/404.html` with proper path segments
-- **Build Output**: `dist/` directory
-
-#### Troubleshooting
-
-If you encounter routing issues:
-1. Ensure the repository name matches the base path (`webtool`)
-2. Check that GitHub Pages is enabled in repository settings
-3. Verify the `gh-pages` branch contains the built files
-4. Clear browser cache and try again
-
-## Project Structure
-
+## 📁 Project Structure
 ```
 src/
 ├── components/          # Reusable React components
 │   ├── Header.tsx      # Navigation header
 │   ├── Footer.tsx      # Footer component
+│   ├── SEO.tsx         # Dynamic SEO component
 │   ├── JSONFormatter.tsx
 │   ├── JSONValidator.tsx
 │   ├── JSONTreeView.tsx
 │   └── ErrorBoundary.tsx
 ├── pages/              # Page components
-│   ├── Home.tsx        # Home page (JSON Formatter)
+│   ├── Home.tsx        # Landing page
 │   ├── JSONFormatter.tsx
 │   ├── JSONValidator.tsx
 │   ├── JSONTreeView.tsx
 │   ├── RegexTester.tsx
 │   ├── RegexGuide.tsx
 │   ├── JSONGuide.tsx
-
 │   ├── PrivacyPolicy.tsx
 │   └── Terms.tsx
-├── App.tsx             # Main app component with routing
+├── App.tsx             # Main app component
 ├── main.tsx           # Entry point
 └── index.css          # Global styles
 ```
 
-## Migration from Next.js
+## 🌐 SEO Optimized
 
-This project was migrated from Next.js to Vite React. Key changes:
+- **Dynamic meta tags** for each page
+- **Open Graph** and **Twitter Cards** support
+- **Structured data** (JSON-LD) for search engines
+- **Sitemap.xml** and **robots.txt**
+- **Custom domain** support
+- **Mobile responsive** design
 
-- **Routing**: Replaced Next.js App Router with React Router
-- **Build System**: Switched from Next.js to Vite
-- **File Structure**: Moved from `src/app/` to `src/pages/`
-- **Styling**: Updated PostCSS configuration for Vite
-- **TypeScript**: Updated configuration for Vite
-- **ESLint**: Updated configuration for Vite
+## 🚀 Deployment
 
-## Contributing
+### GitHub Pages
+```bash
+pnpm deploy
+```
+
+### Custom Domain
+- Configured for `webtool.asrul.dev`
+- Automatic HTTPS enforcement
+- CDN optimization
+
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## License
+## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Author
+## 👨‍💻 Author
 
 **Asrul Harahap**
+- 🌐 Website: [https://asruldev.com](https://asruldev.com)
+- 🐦 Twitter: [@asruldev](https://twitter.com/asruldev)
+- 💼 GitHub: [@asruldev](https://github.com/asruldev)
 
-- GitHub: [@asrulharahap](https://github.com/asrulharahap)
-- Website: [asrulharahap.com](https://asrulharahap.com)
+## 🙏 Acknowledgments
+
+- Built with [React](https://reactjs.org/)
+- Styled with [Tailwind CSS](https://tailwindcss.com/)
+- Syntax highlighting with [Prism.js](https://prismjs.com/)
+- Icons from [React Icons](https://react-icons.github.io/react-icons/)
+
+---
+
+⭐ **Star this repository if you find it helpful!**

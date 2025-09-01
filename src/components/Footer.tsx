@@ -16,7 +16,7 @@ export function Footer() {
               </span>
             </div>
             <p className="text-gray-600 mb-4">
-              Free online JSON formatter, validator, and converter. Format your JSON data with ease.
+              Free online JSON formatter, validator, JWT decoder, and regex tester. Format your data with ease.
             </p>
           </div>
 
@@ -27,6 +27,7 @@ export function Footer() {
               <li><Link to="/" className="text-gray-600 hover:text-blue-600 transition-colors">JSON Formatter</Link></li>
               <li><Link to="/validator" className="text-gray-600 hover:text-blue-600 transition-colors">JSON Validator</Link></li>
               <li><Link to="/tree-view" className="text-gray-600 hover:text-blue-600 transition-colors">Tree View</Link></li>
+              <li><Link to="/jwt-decoder" className="text-gray-600 hover:text-purple-600 transition-colors">JWT Decoder</Link></li>
               <li><Link to="/regex" className="text-gray-600 hover:text-blue-600 transition-colors">Regex</Link></li>
             </ul>
           </div>

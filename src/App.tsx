@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import JSONFormatter from './pages/JSONFormatter'
 import JSONValidator from './pages/JSONValidator'
 import JSONTreeView from './pages/JSONTreeView'
+import JWTDecoder from './pages/JWTDecoder'
 import RegexTester from './pages/RegexTester'
 import RegexGuide from './pages/RegexGuide'
 import JSONGuide from './pages/JSONGuide'
@@ -20,6 +21,7 @@ function App() {
           <Route path="/json-formatter" element={<JSONFormatter />} />
           <Route path="/validator" element={<JSONValidator />} />
           <Route path="/tree-view" element={<JSONTreeView />} />
+          <Route path="/jwt-decoder" element={<JWTDecoder />} />
           <Route path="/regex" element={<RegexTester />} />
           <Route path="/regex-guide" element={<RegexGuide />} />
           <Route path="/json-guide" element={<JSONGuide />} />
