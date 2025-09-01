@@ -1,8 +1,7 @@
-'use client';
+
 
 import { useState, useCallback, useEffect } from 'react';
-import { Prism as SyntaxHighlighter, SyntaxHighlighterProps } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import Editor from 'react-simple-code-editor';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism.css';
@@ -147,15 +146,20 @@ export function JSONFormatter({ SyntaxHighlighter, syntaxStyle }: JSONFormatterP
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center space-x-2">
             <label className="text-sm font-medium text-gray-700">Indentation:</label>
-            <select
-              value={indentation}
-              onChange={(e) => setIndentation(Number(e.target.value))}
-              className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value={2}>2 spaces</option>
-              <option value={3}>3 spaces</option>
-              <option value={4}>4 spaces</option>
-            </select>
+            <div className="relative">
+              <select
+                value={indentation}
+                onChange={(e) => setIndentation(Number(e.target.value))}
+                className="appearance-none border border-gray-300 rounded-lg px-4 py-2 text-sm font-medium bg-white text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors pr-8"
+              >
+                <option value={2}>2 spaces</option>
+                <option value={3}>3 spaces</option>
+                <option value={4}>4 spaces</option>
+              </select>
+              <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                ▼
+              </span>
+            </div>
           </div>
 
           <div className="flex space-x-2">

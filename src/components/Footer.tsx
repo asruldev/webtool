@@ -24,9 +24,9 @@ export function Footer() {
             <ul className="space-y-2">
               <li><a href="/" className="text-gray-600 hover:text-blue-600 transition-colors">JSON Formatter</a></li>
               <li><a href="/validator" className="text-gray-600 hover:text-blue-600 transition-colors">JSON Validator</a></li>
-              <li><a href="/converter" className="text-gray-600 hover:text-blue-600 transition-colors">JSON to XML</a></li>
+
               <li><a href="/tree-view" className="text-gray-600 hover:text-blue-600 transition-colors">Tree View</a></li>
-              <li><a href="/regex" className="text-gray-600 hover:text-blue-600 transition-colors">Regex Builder</a></li>
+              <li><a href="/regex" className="text-gray-600 hover:text-blue-600 transition-colors">Regex</a></li>
             </ul>
           </div>
 
@@ -43,7 +43,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-600">
-          <p>&copy; 2025 Web Tools. Built with Next.js and Tailwind CSS.</p>
+          <p>&copy; 2025 Web Tools. Built with React and Vite.</p>
           <p className="mt-2 text-xs text-gray-400 italic">by Asrul Harahap</p>
         </div>
       </div>

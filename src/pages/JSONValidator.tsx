@@ -1,9 +1,7 @@
-'use client';
-
 import { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { JSONTreeView } from '@/components/JSONTreeView';
+import { JSONValidator } from '@/components/JSONValidator';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Editor from 'react-simple-code-editor';
@@ -11,23 +9,23 @@ import Prism from 'prismjs';
 import 'prismjs/components/prism-json';
 import 'prismjs/themes/prism.css';
 
-export default function TreeViewPage() {
+export default function JSONValidatorPage() {
   const [jsonInput, setJsonInput] = useState('');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <>
       <Header />
       
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-4">
-              JSON Tree View
+            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-4">
+              JSON Validator
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Visualize your JSON data in an interactive tree structure. 
-              Explore nested objects and arrays with ease.
+              Validate your JSON data for syntax errors and get detailed analysis. 
+              Free online JSON validation tool.
             </p>
           </div>
 
@@ -61,44 +59,21 @@ export default function TreeViewPage() {
                   marginBottom: 16,
                   resize: 'none',
                 }}
-                textareaId="json-treeview-input"
-                placeholder="Paste your JSON data here to see tree view..."
+                textareaId="json-validator-input"
+                placeholder="Paste your JSON data here to validate..."
               />
+              <div className="h-64 overflow-auto rounded-lg">
+                <SyntaxHighlighter language="json" style={vscDarkPlus} customStyle={{ background: '#f8fafc', color: '#222', fontSize: 14, borderRadius: 8, padding: 16, minHeight: '100%' }}>
+                  {jsonInput || '// JSON preview will appear here...'}
+                </SyntaxHighlighter>
+              </div>
             </div>
 
-            {/* Tree View */}
+            {/* Validation Result */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Tree View</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Validation Result</h3>
               <div className="h-96">
-                <JSONTreeView jsonData={jsonInput} />
-              </div>
-            </div>
-          </div>
-
-          {/* Features Info */}
-          <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Tree View Features</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                  <span className="text-2xl">🔷</span>
-                </div>
-                <h4 className="font-medium text-gray-900 mb-2">Objects</h4>
-                <p className="text-sm text-gray-600">Expandable objects with key-value pairs</p>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                  <span className="text-2xl">🔶</span>
-                </div>
-                <h4 className="font-medium text-gray-900 mb-2">Arrays</h4>
-                <p className="text-sm text-gray-600">Expandable arrays with indexed items</p>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                  <span className="text-2xl">🎨</span>
-                </div>
-                <h4 className="font-medium text-gray-900 mb-2">Color Coded</h4>
-                <p className="text-sm text-gray-600">Different colors for different data types</p>
+                <JSONValidator jsonData={jsonInput} />
               </div>
             </div>
           </div>
@@ -109,26 +84,26 @@ export default function TreeViewPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
                 {
-                  name: 'Simple Object',
+                  name: 'Valid JSON',
                   json: '{"name":"Asrul","age":30,"city":"Indonesia"}'
                 },
                 {
-                  name: 'Nested Object',
-                  json: '{"user":{"name":"Asrul","profile":{"email":"asrul@example.com","verified":true}}}'
+                  name: 'Invalid JSON (Missing Quote)',
+                  json: '{"name":"Asrul,"age":30,"city":"Indonesia"}'
                 },
                 {
-                  name: 'Array of Objects',
-                  json: '[{"id":1,"name":"Alice","skills":["JavaScript","React"]},{"id":2,"name":"Bob","skills":["Python","Django"]}]'
+                  name: 'Valid Array',
+                  json: '[{"id":1,"name":"Alice"},{"id":2,"name":"Bob"}]'
                 },
                 {
-                  name: 'Complex Structure',
-                  json: '{"company":"Tech Corp","departments":{"engineering":{"head":"Mike","employees":[{"name":"Alice","role":"Developer"},{"name":"Bob","role":"Designer"}]},"marketing":{"head":"Lisa","budget":50000}}}'
+                  name: 'Invalid JSON (Extra Comma)',
+                  json: '{"name":"Asrul","age":30,}'
                 }
               ].map((sample, index) => (
                 <button
                   key={index}
                   onClick={() => setJsonInput(sample.json)}
-                  className="text-left p-4 border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-colors"
+                  className="text-left p-4 border border-gray-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-colors"
                 >
                   <h4 className="font-medium text-gray-900 mb-2">{sample.name}</h4>
                   <p className="text-sm text-gray-600 font-mono truncate">{sample.json}</p>
@@ -140,6 +115,6 @@ export default function TreeViewPage() {
       </main>
 
       <Footer />
-    </div>
+    </>
   );
-} 
+}

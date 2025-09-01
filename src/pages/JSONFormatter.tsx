@@ -1,17 +1,12 @@
-'use client';
-
-import { useState } from 'react';
-import { JSONFormatter } from '@/components/JSONFormatter';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { JSONFormatter } from '@/components/JSONFormatter';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-export default function Home() {
-  const [jsonInput, setJsonInput] = useState('');
-
+export default function JSONFormatterPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <>
       <Header />
       
       <main className="container mx-auto px-4 py-8">
@@ -33,6 +28,6 @@ export default function Home() {
       </main>
 
       <Footer />
-    </div>
+    </>
   );
 }

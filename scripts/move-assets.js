@@ -1,5 +1,9 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Function to recursively copy directory
 function copyDir(src, dest) {
@@ -43,26 +47,21 @@ function updateHtmlFiles(dir) {
 }
 
 // Main execution
+const distDir = path.join(__dirname, '..', 'dist');
 const outDir = path.join(__dirname, '..', 'out');
-const nextDir = path.join(outDir, '_next');
-const assetsDir = path.join(outDir, 'assets');
 
-console.log('Moving assets from _next to assets...');
+console.log('Copying dist to out for deployment...');
 
-if (fs.existsSync(nextDir)) {
-  // Copy _next contents to assets
-  copyDir(nextDir, assetsDir);
-  console.log('Assets copied successfully');
+if (fs.existsSync(distDir)) {
+  // Copy dist contents to out
+  copyDir(distDir, outDir);
+  console.log('Dist copied to out successfully');
   
-  // Update HTML files
+  // Update HTML files if needed
   updateHtmlFiles(outDir);
   console.log('HTML files updated successfully');
-  
-  // Remove _next directory
-  fs.rmSync(nextDir, { recursive: true, force: true });
-  console.log('Removed _next directory');
 } else {
-  console.log('_next directory not found, skipping...');
+  console.log('dist directory not found, skipping...');
 }
 
 console.log('Asset migration completed!'); 

@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useMemo, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -28,7 +26,7 @@ const regexExplain = (pattern: string) => {
 const MODES = ['Match', 'Search', 'Replace'] as const;
 type Mode = typeof MODES[number];
 
-export default function RegexPage() {
+export default function RegexTesterPage() {
   const [pattern, setPattern] = useState('');
   const [flags, setFlags] = useState('g');
   const [testString, setTestString] = useState('');
@@ -75,43 +73,7 @@ export default function RegexPage() {
     return result;
   }, [regex, testString]);
 
-  // Highlight hasil match di test string (dengan highlight grup)
-  const highlightedTestString = useMemo(() => {
-    if (!matches.length) return testString;
-    let lastIndex = 0;
-    let result = '';
-    matches.forEach((m, i) => {
-      result +=
-        Prism.util.encode(testString.slice(lastIndex, m.index)) +
-        `<mark style="background:#fde68a;color:#b45309;">` +
-        (m.allGroups && m.allGroups.length > 0 && regex
-          ? highlightGroups(m.match, m.allGroups, regex)
-          : Prism.util.encode(testString.slice(m.index, m.index + m.length))) +
-        '</mark>';
-      lastIndex = m.index + m.length;
-    });
-    result += Prism.util.encode(testString.slice(lastIndex));
-    return result;
-  }, [matches, testString, regex]);
 
-  function highlightGroups(full: string, groups: string[], regex: RegExp) {
-    if (!groups.length) return Prism.util.encode(full);
-    let result = '';
-    let last = 0;
-    let idx = 0;
-    for (const g of groups) {
-      if (g == null) continue;
-      const pos = full.indexOf(g, last);
-      if (pos !== -1) {
-        result += Prism.util.encode(full.slice(last, pos));
-        result += `<span style="background:#a7f3d0;color:#065f46;">${Prism.util.encode(g)}</span>`;
-        last = pos + g.length;
-      }
-      idx++;
-    }
-    result += Prism.util.encode(full.slice(last));
-    return result;
-  }
 
   // Replace result
   const replacedString = useMemo(() => {
@@ -153,7 +115,7 @@ export default function RegexPage() {
   }, [pattern, flags, testString]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <>
       <Header />
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-5xl mx-auto">
@@ -216,7 +178,7 @@ export default function RegexPage() {
                 {['g','i','m','s','u','y'].map(f => (
                   <label key={f} className="inline-flex items-center mr-2">
                     <input type="checkbox" checked={flags.includes(f)} onChange={e => setFlags(flags => e.target.checked ? flags + f : flags.replace(f, ''))} className="form-checkbox text-blue-600" />
-                    <span className="ml-1 text-xs">{f}</span>
+                    <span className="ml-1 text-xs text-black">{f}</span>
                   </label>
                 ))}
               </div>
@@ -228,10 +190,10 @@ export default function RegexPage() {
                 <div className="bg-gray-50 border border-gray-200 rounded p-3 mb-4">
                   <div className="text-sm font-semibold text-gray-700 mb-2">Validation Summary</div>
                   <div className="grid grid-cols-2 gap-2 text-xs mb-2">
-                    <div>Pattern Length: <span className="font-mono text-blue-600">{pattern.length}</span></div>
-                    <div>Flag Count: <span className="font-mono text-blue-600">{flags.length}</span></div>
-                    <div>Status: <span className={`font-bold ${isTrulyValid ? 'text-green-600' : 'text-red-600'}`}>{isTrulyValid ? 'Ready & Matching' : 'Not matching or invalid'}</span></div>
-                    <div>Can Match: <span className={`font-bold ${isTrulyValid ? 'text-green-600' : 'text-red-600'}`}>{isTrulyValid ? 'Yes' : 'No'}</span></div>
+                    <div className="text-black">Pattern Length: <span className="font-mono text-blue-600">{pattern.length}</span></div>
+                    <div className="text-black">Flag Count: <span className="font-mono text-blue-600">{flags.length}</span></div>
+                    <div className="text-black">Status: <span className={`font-bold ${isTrulyValid ? 'text-green-600' : 'text-red-600'}`}>{isTrulyValid ? 'Ready & Matching' : 'Not matching or invalid'}</span></div>
+                    <div className="text-black">Can Match: <span className={`font-bold ${isTrulyValid ? 'text-green-600' : 'text-red-600'}`}>{isTrulyValid ? 'Yes' : 'No'}</span></div>
                   </div>
                   <div className="text-xs text-gray-500">A pattern is <span className="font-bold">valid</span> if it compiles <span className="font-mono">dan</span> matches at least one line in the test string.</div>
                 </div>
@@ -349,8 +311,8 @@ export default function RegexPage() {
               {mode === 'Replace' && (
                 <div className="mt-4">
                   <label className="block text-lg font-semibold text-gray-900 mb-2">Replace Result</label>
-                  <div className="bg-gray-50 border border-gray-200 rounded p-3 text-sm font-mono min-h-[40px] overflow-x-auto" style={{whiteSpace:'pre-wrap'}}>
-                    {replacedString || <span className="text-gray-400">No replace result.</span>}
+                  <div className="bg-gray-100 border border-gray-200 rounded p-3 text-sm font-mono min-h-[40px] overflow-x-auto" style={{whiteSpace:'pre-wrap'}}>
+                    {replacedString || <span className="text-gray-500 italic">No replace result.</span>}
                   </div>
                 </div>
               )}
@@ -362,7 +324,7 @@ export default function RegexPage() {
                 </div>
               )}
               {mode === 'Search' && matches.length > 0 && (
-                <div className="mt-2 bg-gray-50 border border-gray-200 rounded p-3 text-sm font-mono min-h-[40px] overflow-x-auto" style={{whiteSpace:'pre-wrap'}}>
+                <div className="mt-2 bg-gray-100 border border-gray-200 rounded p-3 text-sm font-mono min-h-[40px] overflow-x-auto" style={{whiteSpace:'pre-wrap'}}>
                   <span dangerouslySetInnerHTML={{__html: highlightSearch(testString, matches, currentMatch)}} />
                 </div>
               )}
@@ -374,9 +336,9 @@ export default function RegexPage() {
                 </div>
               )}
               {mode === 'Match' && (
-                <div className="bg-gray-50 border border-gray-200 rounded p-3 text-sm font-mono min-h-[40px] overflow-x-auto" style={{whiteSpace:'pre-wrap'}}>
+                <div className="bg-gray-100 border border-gray-200 rounded p-3 text-sm font-mono min-h-[40px] overflow-x-auto" style={{whiteSpace:'pre-wrap'}}>
                   {testString.trim() === '' ? (
-                    <span className="text-gray-400">No test string.</span>
+                    <span className="text-gray-500 italic">No test string.</span>
                   ) : (
                     testString.split('\n').map((line, idx) => {
                       let isLineValid = false;
@@ -386,7 +348,7 @@ export default function RegexPage() {
                       return (
                         <div key={idx} className={`flex items-center gap-2 mb-1 ${isLineValid ? 'text-green-700' : 'text-red-700'}`}>
                           <span className={`inline-block w-5 text-lg font-bold ${isLineValid ? 'text-green-500' : 'text-red-400'}`}>{isLineValid ? '✓' : '✗'}</span>
-                          <span className="break-all">{line || <span className="text-gray-400">(empty)</span>}</span>
+                          <span className="break-all">{line || <span className="text-gray-500 italic">(empty)</span>}</span>
                         </div>
                       );
                     })
@@ -394,10 +356,10 @@ export default function RegexPage() {
                 </div>
               )}
               {/* Statistik */}
-              <div className="mt-4 text-xs text-gray-500">
+              <div className="mt-4 text-xs text-gray-600">
                 <div>Match count: <span className="font-bold text-blue-700">{matches.length}</span></div>
-                <div>Flags: <span className="font-mono">{flags || '(none)'}</span></div>
-                <div>Group count: <span className="font-mono">{matches[0]?.allGroups?.length ?? 0}</span></div>
+                <div>Flags: <span className="font-mono font-semibold">{flags || '(none)'}</span></div>
+                <div>Group count: <span className="font-mono font-semibold">{matches[0]?.allGroups?.length ?? 0}</span></div>
               </div>
               {/* Match details */}
               {matches.length > 0 && (
@@ -417,7 +379,7 @@ export default function RegexPage() {
         </div>
       </main>
       <Footer />
-    </div>
+    </>
   );
 
   // Highlight search mode
@@ -436,4 +398,4 @@ export default function RegexPage() {
     result += Prism.util.encode(str.slice(lastIndex));
     return result;
   }
-} 
+}

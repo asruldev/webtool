@@ -1,21 +1,10 @@
-'use client';
+
 
 import { useMemo } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-interface ValidationResult {
-  isValid: boolean;
-  errors: string[];
-  warnings: string[];
-  parsedData?: any;
-  statistics: {
-    totalKeys: number;
-    totalValues: number;
-    maxDepth: number;
-    size: number;
-  };
-}
+
 
 interface JSONValidatorProps {
   jsonData: string;
@@ -29,13 +18,13 @@ const analyzeJSON = (obj: any, depth: number = 0) => {
   if (typeof obj === 'object' && obj !== null) {
     if (Array.isArray(obj)) {
       totalValues = obj.length;
-      obj.forEach((item, index) => {
+      obj.forEach((item) => {
         totalKeys++;
         const childStats = analyzeJSON(item, depth + 1);
         maxDepth = Math.max(maxDepth, childStats.maxDepth);
       });
     } else {
-      Object.entries(obj).forEach(([key, value]) => {
+              Object.entries(obj).forEach(([, value]) => {
         totalKeys++;
         totalValues++;
         const childStats = analyzeJSON(value, depth + 1);

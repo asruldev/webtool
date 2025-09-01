@@ -1,67 +1,131 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Web Tools
+
+A collection of useful web development tools built with React and Vite.
+
+## Features
+
+- **JSON Formatter**: Format, validate, and beautify JSON data
+- **JSON Validator**: Validate JSON syntax and get detailed analysis
+- **JSON Tree View**: Visualize JSON data in an interactive tree structure
+- **Regex Tester**: Test and debug regular expressions interactively
+- **JSON Guide**: Learn JSON with examples and best practices
+- **Regex Guide**: Learn regular expressions with comprehensive examples
+
+
+## Tech Stack
+
+- **React 19** - UI library
+- **Vite** - Build tool and development server
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling
+- **React Router** - Client-side routing
+- **Prism.js** - Syntax highlighting
+- **React Icons** - Icon library
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ 
+- npm or pnpm
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd webtool
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+pnpm install
+```
+
+3. Start the development server:
 ```bash
 npm run dev
 # or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open your browser and navigate to `http://localhost:5173`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on GitHub Pages
-
-This project is configured for deployment to GitHub Pages. There are two ways to deploy:
-
-## Automatic Deployment (Recommended)
-
-The project uses GitHub Actions for automatic deployment. Every push to the `main` branch will automatically trigger a deployment to GitHub Pages.
-
-To enable this:
-1. Go to your repository settings
-2. Navigate to "Pages" section
-3. Set source to "GitHub Actions"
-
-## Manual Deployment
-
-You can also deploy manually using the following commands:
+### Build for Production
 
 ```bash
-# Install dependencies (if not already done)
-npm install
-
-# Build the project
 npm run build
-
-# Deploy to GitHub Pages
-npm run deploy
+# or
+pnpm build
 ```
 
-## Configuration
+The built files will be in the `dist` directory.
 
-The project is configured with:
-- `output: 'export'` in `next.config.js` for static site generation
-- `gh-pages` package for deployment
-- GitHub Actions workflow for automated deployment
+### Deployment
 
-Your site will be available at: `https://[username].github.io/[repository-name]/`
+The project is configured for GitHub Pages deployment:
+
+```bash
+npm run deploy
+# or
+pnpm deploy
+```
+
+## Project Structure
+
+```
+src/
+├── components/          # Reusable React components
+│   ├── Header.tsx      # Navigation header
+│   ├── Footer.tsx      # Footer component
+│   ├── JSONFormatter.tsx
+│   ├── JSONValidator.tsx
+│   ├── JSONTreeView.tsx
+│   └── ErrorBoundary.tsx
+├── pages/              # Page components
+│   ├── Home.tsx        # Home page (JSON Formatter)
+│   ├── JSONFormatter.tsx
+│   ├── JSONValidator.tsx
+│   ├── JSONTreeView.tsx
+│   ├── RegexTester.tsx
+│   ├── RegexGuide.tsx
+│   ├── JSONGuide.tsx
+
+│   ├── PrivacyPolicy.tsx
+│   └── Terms.tsx
+├── App.tsx             # Main app component with routing
+├── main.tsx           # Entry point
+└── index.css          # Global styles
+```
+
+## Migration from Next.js
+
+This project was migrated from Next.js to Vite React. Key changes:
+
+- **Routing**: Replaced Next.js App Router with React Router
+- **Build System**: Switched from Next.js to Vite
+- **File Structure**: Moved from `src/app/` to `src/pages/`
+- **Styling**: Updated PostCSS configuration for Vite
+- **TypeScript**: Updated configuration for Vite
+- **ESLint**: Updated configuration for Vite
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## Author
+
+**Asrul Harahap**
+
+- GitHub: [@asrulharahap](https://github.com/asrulharahap)
+- Website: [asrulharahap.com](https://asrulharahap.com)
