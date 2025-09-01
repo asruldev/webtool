@@ -65,13 +65,44 @@ The built files will be in the `dist` directory.
 
 ### Deployment
 
-The project is configured for GitHub Pages deployment:
+This project is configured for GitHub Pages deployment with proper SPA routing support.
+
+#### Manual Deployment
 
 ```bash
 npm run deploy
 # or
 pnpm deploy
 ```
+
+This will:
+1. Build the project for production
+2. Deploy to the `gh-pages` branch
+3. Make it available at `https://asrulharahap.github.io/webtool`
+
+#### Automated Deployment (GitHub Actions)
+
+The project includes a GitHub Actions workflow that automatically deploys on every push to the `main` branch. To enable this:
+
+1. Go to your repository settings
+2. Navigate to "Pages" in the sidebar
+3. Set the source to "GitHub Actions"
+4. Push to the `main` branch to trigger deployment
+
+#### Configuration Details
+
+- **Base Path**: `/webtool/` (configured in `vite.config.ts`)
+- **Router Basename**: `/webtool` (configured in `src/main.tsx`)
+- **SPA Routing**: Handled by `public/404.html` with proper path segments
+- **Build Output**: `dist/` directory
+
+#### Troubleshooting
+
+If you encounter routing issues:
+1. Ensure the repository name matches the base path (`webtool`)
+2. Check that GitHub Pages is enabled in repository settings
+3. Verify the `gh-pages` branch contains the built files
+4. Clear browser cache and try again
 
 ## Project Structure
 

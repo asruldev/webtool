@@ -1,18 +1,17 @@
 {
   "name": "webtool",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "type": "module",
+  "homepage": "https://asrulharahap.github.io/webtool",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "postbuild": "node scripts/move-assets.js",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
-    "deploy-only": "node scripts/deploy-only.js",
-    "force-deploy": "node scripts/force-deploy.js"
+    "deploy": "pnpm build && gh-pages -d dist",
+    "deploy-only": "gh-pages -d dist",
+    "predeploy": "pnpm build"
   },
   "dependencies": {
     "prismjs": "^1.30.0",
