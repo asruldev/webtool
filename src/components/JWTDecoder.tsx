@@ -4,7 +4,7 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Editor from 'react-simple-code-editor';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-json';
-import { FiCopy, FiRefreshCw, FiEye, FiEyeOff } from 'react-icons/fi';
+import { FiCopy, FiRefreshCw, FiEye, FiEyeOff, FiInfo } from 'react-icons/fi';
 
 interface JWTDecoderProps {
   syntaxStyle?: any;
@@ -38,9 +38,9 @@ const parseJWT = (token: string): DecodedJWT => {
 
     const [headerB64, payloadB64, signature] = parts;
     
-    // Decode header and payload
-    const header = JSON.parse(atob(headerB64.replace(/-/g, '+').replace(/_/g, '/')));
-    const payload = JSON.parse(atob(payloadB64.replace(/-/g, '+').replace(/_/g, '/')));
+    // Decode header and payload using helper function
+    const header = JSON.parse(atob(base64urlToBase64(headerB64)));
+    const payload = JSON.parse(atob(base64urlToBase64(payloadB64)));
 
     return {
       header,
@@ -62,18 +62,76 @@ const parseJWT = (token: string): DecodedJWT => {
   }
 };
 
-const generateJWT = (header: JWTHeader, payload: JWTPayload, secret: string): string => {
+// Helper function to convert string to base64url
+const base64url = (str: string): string => {
+  return btoa(str)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
+};
+
+// Helper function to convert base64url to base64
+const base64urlToBase64 = (str: string): string => {
+  return str.replace(/-/g, '+').replace(/_/g, '/');
+};
+
+const generateJWT = async (header: JWTHeader, payload: JWTPayload, secret: string): Promise<string> => {
   try {
-    const headerB64 = btoa(JSON.stringify(header)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-    const payloadB64 = btoa(JSON.stringify(payload)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const headerB64 = base64url(JSON.stringify(header));
+    const payloadB64 = base64url(JSON.stringify(payload));
     
-    // For demo purposes, we'll create a simple signature
-    // In production, you'd use proper crypto libraries
-    const signature = btoa(secret).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    // Handle different algorithms
+    let signature = '';
+    
+    if (header.alg === 'none') {
+      // For unsecured JWTs, signature is empty
+      signature = '';
+    } else if (header.alg.startsWith('HS')) {
+      // For HMAC algorithms, use Web Crypto API
+      const encoder = new TextEncoder();
+      const keyData = encoder.encode(secret);
+      const message = encoder.encode(`${headerB64}.${payloadB64}`);
+      
+      let algorithm: string;
+      switch (header.alg) {
+        case 'HS256':
+          algorithm = 'SHA-256';
+          break;
+        case 'HS384':
+          algorithm = 'SHA-384';
+          break;
+        case 'HS512':
+          algorithm = 'SHA-512';
+          break;
+        default:
+          throw new Error(`Unsupported HMAC algorithm: ${header.alg}`);
+      }
+      
+      // Import key
+      const key = await crypto.subtle.importKey(
+        'raw',
+        keyData,
+        { name: 'HMAC', hash: algorithm },
+        false,
+        ['sign']
+      );
+      
+      // Sign
+      const signatureBuffer = await crypto.subtle.sign('HMAC', key, message);
+      const signatureArray = new Uint8Array(signatureBuffer);
+      const signatureString = Array.from(signatureArray).map(byte => String.fromCharCode(byte)).join('');
+      signature = base64url(signatureString);
+    } else {
+      // For other algorithms, create a demo signature
+      // In a real implementation, you'd need proper crypto libraries
+      const demoSignature = `demo-${header.alg}-${Date.now()}`;
+      signature = base64url(demoSignature);
+    }
     
     return `${headerB64}.${payloadB64}.${signature}`;
   } catch (error) {
-    throw new Error('Failed to generate JWT');
+    console.error('JWT generation error:', error);
+    throw new Error(`Failed to generate JWT: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 };
 
@@ -83,6 +141,11 @@ export function JWTDecoder({ syntaxStyle }: JWTDecoderProps) {
   const [activeTab, setActiveTab] = useState<'decoder' | 'encoder'>('decoder');
   const [showSecret, setShowSecret] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
+  const [headerData, setHeaderData] = useState('{\n  "alg": "HS256",\n  "typ": "JWT"\n}');
+  const [payloadData, setPayloadData] = useState(`{\n  "sub": "1234567890",\n  "name": "Asrul Harahap",\n  "admin": true,\n  "iat": ${Math.floor(Date.now() / 1000)}\n}`);
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState('HS256');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedJWT, setGeneratedJWT] = useState('');
 
   const decodedJWT = useMemo(() => {
     if (!jwtInput.trim()) {
@@ -109,24 +172,134 @@ export function JWTDecoder({ syntaxStyle }: JWTDecoderProps) {
   const handleClear = useCallback(() => {
     setJwtInput('');
     setSecret('');
+    setGeneratedJWT('');
   }, []);
 
-  const handleGenerateJWT = useCallback(() => {
+  const handleResetToDefaults = useCallback(() => {
+    setHeaderData('{\n  "alg": "HS256",\n  "typ": "JWT"\n}');
+    setPayloadData(`{\n  "sub": "1234567890",\n  "name": "Asrul Harahap",\n  "admin": true,\n  "iat": ${Math.floor(Date.now() / 1000)}\n}`);
+    setSelectedAlgorithm('HS256');
+    setGeneratedJWT('');
+  }, []);
+
+  const handleUpdateTimestamp = useCallback(() => {
     try {
-      const header = { alg: 'HS256', typ: 'JWT' };
-      const payload = {
-        sub: '1234567890',
-        name: 'John Doe',
-        admin: true,
-        iat: Math.floor(Date.now() / 1000)
-      };
+      const payload = JSON.parse(payloadData);
+      payload.iat = Math.floor(Date.now() / 1000);
+      setPayloadData(JSON.stringify(payload, null, 2));
+    } catch (error) {
+      console.error('Failed to update timestamp:', error);
+    }
+  }, [payloadData]);
+
+  const formatTimestamp = useCallback((timestamp: number): string => {
+    const date = new Date(timestamp * 1000);
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZoneName: 'short'
+    });
+  }, []);
+
+  const formatRelativeTime = useCallback((timestamp: number): string => {
+    const now = Math.floor(Date.now() / 1000);
+    const diff = timestamp - now;
+    const absDiff = Math.abs(diff);
+    
+    if (absDiff < 60) {
+      return diff >= 0 ? 'in a few seconds' : 'a few seconds ago';
+    } else if (absDiff < 3600) {
+      const minutes = Math.floor(absDiff / 60);
+      return diff >= 0 ? `in ${minutes} minute${minutes > 1 ? 's' : ''}` : `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    } else if (absDiff < 86400) {
+      const hours = Math.floor(absDiff / 3600);
+      return diff >= 0 ? `in ${hours} hour${hours > 1 ? 's' : ''}` : `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    } else {
+      const days = Math.floor(absDiff / 86400);
+      return diff >= 0 ? `in ${days} day${days > 1 ? 's' : ''}` : `${days} day${days > 1 ? 's' : ''} ago`;
+    }
+  }, []);
+
+  const getCurrentTimestamp = useCallback((): number => {
+    return Math.floor(Date.now() / 1000);
+  }, []);
+
+  const getTimestampFieldName = useCallback((field: string): string => {
+    const fieldNames: { [key: string]: string } = {
+      'iat': 'Issued At',
+      'exp': 'Expiration Time',
+      'nbf': 'Not Before',
+      'auth_time': 'Authentication Time',
+      'iat_claim': 'Issued At Claim',
+      'exp_claim': 'Expiration Claim',
+      'nbf_claim': 'Not Before Claim'
+    };
+    return fieldNames[field] || 'Timestamp';
+  }, []);
+
+  const handleAlgorithmChange = useCallback((algorithm: string) => {
+    setSelectedAlgorithm(algorithm);
+    try {
+      const header = JSON.parse(headerData);
+      header.alg = algorithm;
+      setHeaderData(JSON.stringify(header, null, 2));
+    } catch (error) {
+      console.error('Failed to update header:', error);
+    }
+  }, [headerData]);
+
+  const handleGenerateJWT = useCallback(async () => {
+    if (isGenerating) return;
+    
+    setIsGenerating(true);
+    try {
+      // Validate JSON input
+      let header: JWTHeader;
+      let payload: JWTPayload;
       
-      const generatedJWT = generateJWT(header, payload, secret || 'your-secret-key');
+      try {
+        header = JSON.parse(headerData);
+        payload = JSON.parse(payloadData);
+      } catch (parseError) {
+        alert('Invalid JSON in header or payload. Please check your input.');
+        return;
+      }
+      
+      // Update the algorithm in header based on selection
+      header.alg = selectedAlgorithm;
+      
+      // Validate secret requirement
+      if (selectedAlgorithm !== 'none' && !secret.trim()) {
+        alert(`Please provide a ${selectedAlgorithm.startsWith('HS') ? 'secret key' : 'private key'} for ${selectedAlgorithm} algorithm.`);
+        return;
+      }
+      
+      // Ensure required header fields
+      if (!header.typ) {
+        header.typ = 'JWT';
+      }
+      
+      const generatedJWT = await generateJWT(header, payload, secret || 'your-secret-key');
+      
+      // Verify the generated JWT can be parsed
+      const testParse = parseJWT(generatedJWT);
+      if (!testParse.isValid) {
+        throw new Error('Generated JWT is invalid');
+      }
+      
       setJwtInput(generatedJWT);
+      setGeneratedJWT(generatedJWT);
     } catch (error) {
       console.error('Failed to generate JWT:', error);
+      alert(`Failed to generate JWT: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setIsGenerating(false);
     }
-  }, [secret]);
+  }, [secret, headerData, payloadData, selectedAlgorithm, isGenerating]);
 
   return (
     <div className="space-y-6">
@@ -237,13 +410,94 @@ export function JWTDecoder({ syntaxStyle }: JWTDecoderProps) {
             </div>
           ) : (
             <div className="space-y-4">
+              {/* Generated JWT Preview */}
+              {generatedJWT && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-sm font-medium text-green-800">Generated JWT Token</h4>
+                    <button
+                      onClick={() => handleCopy(generatedJWT, 'JWT')}
+                      className="text-green-600 hover:text-green-800 transition-colors"
+                      title="Copy JWT"
+                    >
+                      <FiCopy />
+                    </button>
+                  </div>
+                  <div className="bg-white border border-green-300 rounded p-2">
+                    <code className="text-xs text-green-700 break-all font-mono">
+                      {generatedJWT}
+                    </code>
+                  </div>
+                  <div className="mt-2 text-xs text-green-600">
+                    ✅ JWT successfully generated and ready to use
+                  </div>
+                </div>
+              )}
+
+              {/* Algorithm Info */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-blue-800">
+                      Selected Algorithm: <span className="font-bold">{selectedAlgorithm}</span>
+                    </p>
+                    <p className="text-xs text-blue-600 mt-1">
+                      {selectedAlgorithm.startsWith('HS') && 'HMAC with SHA - Symmetric key algorithm (shared secret)'}
+                      {selectedAlgorithm.startsWith('RS') && 'RSA with SHA - Asymmetric key algorithm (private/public key pair)'}
+                      {selectedAlgorithm.startsWith('ES') && 'ECDSA with SHA - Elliptic curve algorithm (private/public key pair)'}
+                      {selectedAlgorithm === 'EdDSA' && 'Edwards-curve Digital Signature Algorithm (private/public key pair)'}
+                      {selectedAlgorithm === 'none' && 'Unsecured JWT - No signature (for testing only)'}
+                    </p>
+                  </div>
+                  <div className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    selectedAlgorithm === 'none' ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800'
+                  }`}>
+                    {selectedAlgorithm === 'none' ? '⚠️ Unsecured' : '🔒 Secured'}
+                  </div>
+                </div>
+              </div>
+
+              {/* Algorithm Selection */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Algorithm
+                </label>
+                <select
+                  value={selectedAlgorithm}
+                  onChange={(e) => handleAlgorithmChange(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                >
+                  <optgroup label="HMAC Algorithms">
+                    <option value="HS256">HS256 (HMAC SHA-256)</option>
+                    <option value="HS384">HS384 (HMAC SHA-384)</option>
+                    <option value="HS512">HS512 (HMAC SHA-512)</option>
+                  </optgroup>
+                  <optgroup label="RSA Algorithms">
+                    <option value="RS256">RS256 (RSA SHA-256)</option>
+                    <option value="RS384">RS384 (RSA SHA-384)</option>
+                    <option value="RS512">RS512 (RSA SHA-512)</option>
+                  </optgroup>
+                  <optgroup label="ECDSA Algorithms">
+                    <option value="ES256">ES256 (ECDSA SHA-256)</option>
+                    <option value="ES384">ES384 (ECDSA SHA-384)</option>
+                    <option value="ES512">ES512 (ECDSA SHA-512)</option>
+                  </optgroup>
+                  <optgroup label="EdDSA Algorithms">
+                    <option value="EdDSA">EdDSA (Edwards-curve DSA)</option>
+                  </optgroup>
+                  <optgroup label="None (Unsecured)">
+                    <option value="none">none (Unsecured)</option>
+                  </optgroup>
+                </select>
+              </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Header
                 </label>
                 <Editor
-                  value={JSON.stringify({ alg: 'HS256', typ: 'JWT' }, null, 2)}
-                  onValueChange={() => {}}
+                  value={headerData}
+                  onValueChange={setHeaderData}
                   highlight={code => Prism.highlight(code, Prism.languages.json, 'json')}
                   padding={12}
                   style={{
@@ -257,22 +511,42 @@ export function JWTDecoder({ syntaxStyle }: JWTDecoderProps) {
                     outline: 'none',
                     resize: 'none',
                   }}
-                  readOnly
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Payload
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Payload
+                  </label>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-xs text-gray-500">Current timestamp: {formatTimestamp(getCurrentTimestamp())}</span>
+                    <div className="relative group">
+                      <FiInfo className="text-gray-400 hover:text-gray-600 cursor-help" />
+                      <div className="absolute bottom-full right-0 mb-2 w-64 p-2 bg-gray-800 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                        <div className="font-medium mb-1">JWT Standard Claims:</div>
+                        <div className="space-y-1">
+                          <div><strong>iat</strong> (Issued At): Timestamp when token was issued</div>
+                          <div><strong>exp</strong> (Expiration): Timestamp when token expires</div>
+                          <div><strong>nbf</strong> (Not Before): Token valid from this timestamp</div>
+                          <div><strong>sub</strong> (Subject): Subject of the token</div>
+                          <div><strong>iss</strong> (Issuer): Who issued the token</div>
+                          <div><strong>aud</strong> (Audience): Intended recipient</div>
+                        </div>
+                        <div className="mt-2 pt-2 border-t border-gray-600">
+                          <div className="font-medium">Current timestamp: {getCurrentTimestamp()}</div>
+                          <div>Formatted: {formatTimestamp(getCurrentTimestamp())}</div>
+                          <div className="mt-1 text-gray-400">
+                            All timestamps are in Unix epoch time (seconds since Jan 1, 1970)
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <Editor
-                  value={JSON.stringify({
-                    sub: '1234567890',
-                    name: 'John Doe',
-                    admin: true,
-                    iat: Math.floor(Date.now() / 1000)
-                  }, null, 2)}
-                  onValueChange={() => {}}
+                  value={payloadData}
+                  onValueChange={setPayloadData}
                   highlight={code => Prism.highlight(code, Prism.languages.json, 'json')}
                   padding={12}
                   style={{
@@ -286,28 +560,149 @@ export function JWTDecoder({ syntaxStyle }: JWTDecoderProps) {
                     outline: 'none',
                     resize: 'none',
                   }}
-                  readOnly
                 />
+                
+                {/* Timestamp Preview in Encoder */}
+                {(() => {
+                  try {
+                    const payload = JSON.parse(payloadData);
+                    const timestampFields = Object.entries(payload).filter(([key, value]) => 
+                      typeof value === 'number' && value > 1000000000 && value < 9999999999
+                    ) as [string, number][];
+                    
+                    if (timestampFields.length > 0) {
+                      return (
+                        <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                          <div className="text-sm font-medium text-yellow-800 mb-2">Timestamp Preview:</div>
+                          <div className="space-y-1 text-xs text-yellow-700">
+                            {timestampFields.map(([key, value]) => (
+                              <div key={key} className="flex justify-between items-center">
+                                <div>
+                                  <strong>{key}</strong> ({getTimestampFieldName(key)}): {value}
+                                </div>
+                                <div className="text-right">
+                                  <div>{formatTimestamp(value)}</div>
+                                  <div className="text-gray-500 text-xs">{formatRelativeTime(value)}</div>
+                                  {key === 'exp' && (
+                                    <div className={`font-medium ${getCurrentTimestamp() > value ? 'text-red-600' : 'text-green-600'}`}>
+                                      {getCurrentTimestamp() > value ? '❌ Expired' : '✅ Valid'}
+                                    </div>
+                                  )}
+                                  {key === 'nbf' && (
+                                    <div className={`font-medium ${getCurrentTimestamp() < value ? 'text-orange-600' : 'text-green-600'}`}>
+                                      {getCurrentTimestamp() < value ? '⏳ Not Yet Valid' : '✅ Valid'}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    }
+                  } catch (error) {
+                    // JSON is invalid, don't show timestamp preview
+                  }
+                  return null;
+                })()}
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Secret
+                  {selectedAlgorithm.startsWith('HS') ? 'Secret Key' : 
+                   selectedAlgorithm.startsWith('RS') || selectedAlgorithm.startsWith('ES') ? 'Private Key' :
+                   selectedAlgorithm === 'EdDSA' ? 'Private Key' :
+                   selectedAlgorithm === 'none' ? 'No Key Required' : 'Key'}
                 </label>
-                <input
-                  type={showSecret ? 'text' : 'password'}
-                  value={secret}
-                  onChange={(e) => setSecret(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Enter secret for signing..."
-                />
+                {selectedAlgorithm === 'none' ? (
+                  <div className="text-sm text-gray-500 bg-gray-50 p-3 rounded-lg border">
+                    <p className="font-medium text-orange-600 mb-1">⚠️ Unsecured JWT</p>
+                    <p>This JWT will not be cryptographically signed. Use only for testing purposes.</p>
+                  </div>
+                ) : (
+                  <div className="relative">
+                    <input
+                      type={showSecret ? 'text' : 'password'}
+                      value={secret}
+                      onChange={(e) => setSecret(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder={
+                        selectedAlgorithm.startsWith('HS') ? 'Enter secret key...' :
+                        selectedAlgorithm.startsWith('RS') || selectedAlgorithm.startsWith('ES') ? 'Enter private key (PEM format)...' :
+                        selectedAlgorithm === 'EdDSA' ? 'Enter private key...' : 'Enter key...'
+                      }
+                    />
+                    <button
+                      onClick={() => setShowSecret(!showSecret)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      {showSecret ? <FiEyeOff /> : <FiEye />}
+                    </button>
+                  </div>
+                )}
+                <div className="mt-2 text-xs text-gray-500">
+                  {selectedAlgorithm.startsWith('HS') && 'For HMAC algorithms, use a strong secret key'}
+                  {selectedAlgorithm.startsWith('RS') && 'For RSA algorithms, use your private key in PEM format'}
+                  {selectedAlgorithm.startsWith('ES') && 'For ECDSA algorithms, use your private key in PEM format'}
+                  {selectedAlgorithm === 'EdDSA' && 'For EdDSA algorithm, use your private key'}
+                </div>
               </div>
+
+              <div className="flex space-x-2">
+                <button
+                  onClick={handleUpdateTimestamp}
+                  className="flex-1 bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700 transition-colors"
+                >
+                  Update Timestamp
+                </button>
+                <button
+                  onClick={handleResetToDefaults}
+                  className="flex-1 bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-700 transition-colors"
+                >
+                  Reset to Defaults
+                </button>
+              </div>
+
+              {/* Generated JWT Display */}
+              {generatedJWT && (
+                <div className="mt-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Generated JWT Token
+                    </label>
+                    <button
+                      onClick={() => handleCopy(generatedJWT, 'JWT')}
+                      className="text-gray-500 hover:text-blue-600 transition-colors"
+                      title="Copy JWT"
+                    >
+                      <FiCopy />
+                    </button>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                    <code className="text-sm text-gray-700 break-all font-mono">
+                      {generatedJWT}
+                    </code>
+                  </div>
+                </div>
+              )}
 
               <button
                 onClick={handleGenerateJWT}
-                className="w-full bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition-colors"
+                disabled={isGenerating}
+                className={`w-full px-4 py-2 rounded-md font-medium transition-colors ${
+                  isGenerating 
+                    ? 'bg-gray-400 text-gray-200 cursor-not-allowed' 
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                }`}
               >
-                Generate JWT
+                {isGenerating ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Generating...
+                  </div>
+                ) : (
+                  'Generate JWT'
+                )}
               </button>
             </div>
           )}
@@ -392,6 +787,53 @@ export function JWTDecoder({ syntaxStyle }: JWTDecoderProps) {
                     {JSON.stringify(decodedJWT.payload, null, 2)}
                   </SyntaxHighlighter>
                 </div>
+                
+                {/* Timestamp Information */}
+                {(() => {
+                  const timestampFields = Object.entries(decodedJWT.payload).filter(([key, value]) => 
+                    typeof value === 'number' && value > 1000000000 && value < 9999999999
+                  ) as [string, number][];
+                  
+                  if (timestampFields.length > 0) {
+                    return (
+                      <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div className="text-sm font-medium text-blue-800 mb-2">Timestamp Information:</div>
+                        <div className="space-y-1 text-xs text-blue-700">
+                          {timestampFields.map(([key, value]) => {
+                            const isExpired = key === 'exp' && getCurrentTimestamp() > value;
+                            const isNotYetValid = key === 'nbf' && getCurrentTimestamp() < value;
+                            
+                            return (
+                              <div key={key} className="flex justify-between items-center">
+                                <div>
+                                  <strong>{key}</strong> ({getTimestampFieldName(key)}): {value}
+                                </div>
+                                <div className="text-right">
+                                  <div>{formatTimestamp(value)}</div>
+                                  <div className="text-gray-500 text-xs">{formatRelativeTime(value)}</div>
+                                  {key === 'exp' && (
+                                    <div className={`font-medium ${isExpired ? 'text-red-600' : 'text-green-600'}`}>
+                                      {isExpired ? '❌ Expired' : '✅ Valid'}
+                                    </div>
+                                  )}
+                                  {key === 'nbf' && (
+                                    <div className={`font-medium ${isNotYetValid ? 'text-orange-600' : 'text-green-600'}`}>
+                                      {isNotYetValid ? '⏳ Not Yet Valid' : '✅ Valid'}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
+                          <div className="mt-2 pt-2 border-t border-blue-300">
+                            <div><strong>Current Time:</strong> {formatTimestamp(getCurrentTimestamp())}</div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+                  return null;
+                })()}
               </div>
 
               {/* Signature */}

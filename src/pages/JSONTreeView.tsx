@@ -114,7 +114,7 @@ export default function JSONTreeViewPage() {
               {[
                 {
                   name: 'Simple Object',
-                  json: '{"name":"John","age":30,"city":"New York"}'
+                  json: '{"name":"Asrul","age":30,"city":"New York"}'
                 },
                 {
                   name: 'Nested Object',
@@ -126,16 +126,16 @@ export default function JSONTreeViewPage() {
                 },
                 {
                   name: 'Complex Structure',
-                  json: '{"company":{"name":"Tech Corp","employees":[{"id":1,"name":"John","skills":["JavaScript","React"]},{"id":2,"name":"Jane","skills":["Python","Django"]}]},"projects":{"active":3,"completed":12}}'
+                  json: '{"company":{"name":"Tech Corp","employees":[{"id":1,"name":"Asrul","skills":["JavaScript","React"]},{"id":2,"name":"Jane","skills":["Python","Django"]}]},"projects":{"active":3,"completed":12}}'
                 }
               ].map((sample, index) => (
                 <div key={index} className="border border-gray-200 rounded-lg p-4">
-                  <h4 className="font-medium text-gray-900 mb-2">{sample.name}</h4>
                   <button
                     onClick={() => setJsonInput(sample.json)}
-                    className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                    className="text-left w-full text-black p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors"
                   >
-                    Use this sample
+                    <h4 className="font-medium text-gray-900 mb-2">{sample.name}</h4>
+                    <p className="text-sm text-gray-600 font-mono">{sample.json}</p>
                   </button>
                 </div>
               ))}

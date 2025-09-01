@@ -38,9 +38,9 @@ export default function JSONGuidePage() {
                 <div className="bg-gray-900 rounded-lg p-4">
                   <pre className="text-sm overflow-x-auto text-gray-100 font-mono">
 {`{
-  "name": "John Doe",
+  "name": "Asrul Harahap",
   "age": 30,
-  "email": "john@example.com",
+  "email": "asrul@example.com",
   "isActive": true,
   "hobbies": ["reading", "gaming"],
   "address": {
@@ -55,9 +55,9 @@ export default function JSONGuidePage() {
               <div>
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">Common Mistakes</h3>
                 <div className="bg-red-50 rounded-lg p-4 space-y-2">
-                  <div className="text-black">❌ Trailing commas: <code className="bg-red-200 text-red-900 px-2 py-1 rounded font-mono">{`{"name": "John",}`}</code></div>
-                  <div className="text-black">❌ Unquoted keys: <code className="bg-red-200 text-red-900 px-2 py-1 rounded font-mono">{`{name: "John"}`}</code></div>
-                  <div className="text-black">❌ Single quotes: <code className="bg-red-200 text-red-900 px-2 py-1 rounded font-mono">{`{"name": 'John'}`}</code></div>
+                  <div className="text-black">❌ Trailing commas: <code className="bg-red-200 text-red-900 px-2 py-1 rounded font-mono">{`{"name": "Asrul",}`}</code></div>
+                  <div className="text-black">❌ Unquoted keys: <code className="bg-red-200 text-red-900 px-2 py-1 rounded font-mono">{`{name: "Asrul"}`}</code></div>
+                  <div className="text-black">❌ Single quotes: <code className="bg-red-200 text-red-900 px-2 py-1 rounded font-mono">{`{"name": 'Asrul'}`}</code></div>
                   <div className="text-black">❌ Comments: <code className="bg-red-200 text-red-900 px-2 py-1 rounded font-mono">// Not allowed in JSON</code></div>
                 </div>
               </div>
