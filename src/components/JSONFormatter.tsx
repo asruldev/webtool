@@ -1,10 +1,11 @@
 
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import Editor from 'react-simple-code-editor';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism.css';
+import 'prismjs/components/prism-json';
 import { JSONTreeView } from './JSONTreeView';
 import { JSONValidator } from './JSONValidator';
 
@@ -103,14 +104,6 @@ export function JSONFormatter({ SyntaxHighlighter, syntaxStyle }: JSONFormatterP
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-  }, []);
-
-  useEffect(() => {
-    // Ensure JSON grammar is loaded for PrismJS
-    if (!Prism.languages.json) {
-      // @ts-ignore
-      import('prismjs/components/prism-json').catch(console.error);
-    }
   }, []);
 
   return (
