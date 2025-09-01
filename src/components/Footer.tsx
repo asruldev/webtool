@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export function Footer() {
   return (
     <footer className="bg-white border-t border-gray-200 mt-16">
@@ -22,11 +24,10 @@ export function Footer() {
           <div>
             <h3 className="font-semibold text-gray-900 mb-4">Tools</h3>
             <ul className="space-y-2">
-              <li><a href="/" className="text-gray-600 hover:text-blue-600 transition-colors">JSON Formatter</a></li>
-              <li><a href="/validator" className="text-gray-600 hover:text-blue-600 transition-colors">JSON Validator</a></li>
-
-              <li><a href="/tree-view" className="text-gray-600 hover:text-blue-600 transition-colors">Tree View</a></li>
-              <li><a href="/regex" className="text-gray-600 hover:text-blue-600 transition-colors">Regex</a></li>
+              <li><Link to="/" className="text-gray-600 hover:text-blue-600 transition-colors">JSON Formatter</Link></li>
+              <li><Link to="/validator" className="text-gray-600 hover:text-blue-600 transition-colors">JSON Validator</Link></li>
+              <li><Link to="/tree-view" className="text-gray-600 hover:text-blue-600 transition-colors">Tree View</Link></li>
+              <li><Link to="/regex" className="text-gray-600 hover:text-blue-600 transition-colors">Regex</Link></li>
             </ul>
           </div>
 
@@ -34,10 +35,10 @@ export function Footer() {
           <div>
             <h3 className="font-semibold text-gray-900 mb-4">Resources</h3>
             <ul className="space-y-2">
-              <li><a href="/json-guide" className="text-gray-600 hover:text-blue-600 transition-colors">JSON Guide</a></li>
-              <li><a href="/privacy-policy" className="text-gray-600 hover:text-blue-600 transition-colors">Privacy Policy</a></li>
-              <li><a href="/terms" className="text-gray-600 hover:text-blue-600 transition-colors">Terms of Service</a></li>
-              <li><a href="/regex-guide" className="text-gray-600 hover:text-blue-600 transition-colors">Regex Guide</a></li>
+              <li><Link to="/json-guide" className="text-gray-600 hover:text-blue-600 transition-colors">JSON Guide</Link></li>
+              <li><Link to="/privacy-policy" className="text-gray-600 hover:text-blue-600 transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="text-gray-600 hover:text-blue-600 transition-colors">Terms of Service</Link></li>
+              <li><Link to="/regex-guide" className="text-gray-600 hover:text-blue-600 transition-colors">Regex Guide</Link></li>
             </ul>
           </div>
         </div>
