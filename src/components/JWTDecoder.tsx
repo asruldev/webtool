@@ -566,7 +566,7 @@ export function JWTDecoder({ syntaxStyle }: JWTDecoderProps) {
                 {(() => {
                   try {
                     const payload = JSON.parse(payloadData);
-                    const timestampFields = Object.entries(payload).filter(([key, value]) => 
+                    const timestampFields = Object.entries(payload).filter(([, value]) => 
                       typeof value === 'number' && value > 1000000000 && value < 9999999999
                     ) as [string, number][];
                     
@@ -790,7 +790,7 @@ export function JWTDecoder({ syntaxStyle }: JWTDecoderProps) {
                 
                 {/* Timestamp Information */}
                 {(() => {
-                  const timestampFields = Object.entries(decodedJWT.payload).filter(([key, value]) => 
+                  const timestampFields = Object.entries(decodedJWT.payload).filter(([, value]) => 
                     typeof value === 'number' && value > 1000000000 && value < 9999999999
                   ) as [string, number][];
                   
