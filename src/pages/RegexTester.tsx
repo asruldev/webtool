@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { SEO } from '@/components/SEO';
 import Editor from 'react-simple-code-editor';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-javascript';
@@ -116,6 +117,12 @@ export default function RegexTesterPage() {
 
   return (
     <>
+      <SEO 
+        title="Regex Tester - JavaScript/TypeScript Regular Expression Tool"
+        description="Free online regex tester for JavaScript and TypeScript. Test, debug, and learn regular expressions interactively with real-time matching and replacement."
+        keywords="regex tester, regular expression tool, JavaScript regex, TypeScript regex, regex debugger, regex matcher, free regex tools"
+        url="https://webtool.asrul.dev/regex"
+      />
       <Header />
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-5xl mx-auto">

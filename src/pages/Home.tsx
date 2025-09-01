@@ -2,14 +2,20 @@
 import { JSONFormatter } from '@/components/JSONFormatter';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { SEO } from '@/components/SEO';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import 'prismjs/components/prism-json';
 
 export default function Home() {
-
   return (
     <>
+      <SEO 
+        title="JSON Formatter - Free Online JSON Beautifier & Minifier"
+        description="Free online JSON formatter and beautifier. Format, validate, and minify your JSON data with our powerful tool. No registration required, instant results."
+        keywords="JSON formatter, JSON beautifier, JSON minifier, format JSON, beautify JSON, JSON validator, free JSON tools"
+        url="https://webtool.asrul.dev/"
+      />
       <Header />
       
       <main className="container mx-auto px-4 py-8">

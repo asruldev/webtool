@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "private": true,
   "type": "module",
-  "homepage": "https://asrulharahap.github.io/webtool",
+  "homepage": "https://webtool.asrul.dev",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

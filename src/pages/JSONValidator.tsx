@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { JSONValidator } from '@/components/JSONValidator';
+import { SEO } from '@/components/SEO';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Editor from 'react-simple-code-editor';
@@ -14,6 +15,12 @@ export default function JSONValidatorPage() {
 
   return (
     <>
+      <SEO 
+        title="JSON Validator - Free Online JSON Syntax Checker"
+        description="Free online JSON validator to check syntax errors and validate JSON structure. Get detailed analysis and error reports for your JSON data."
+        keywords="JSON validator, JSON syntax checker, validate JSON, JSON error checker, JSON lint, free JSON tools"
+        url="https://webtool.asrul.dev/validator"
+      />
       <Header />
       
       <main className="container mx-auto px-4 py-8">
@@ -100,14 +107,15 @@ export default function JSONValidatorPage() {
                   json: '{"name":"Asrul","age":30,}'
                 }
               ].map((sample, index) => (
-                <button
-                  key={index}
-                  onClick={() => setJsonInput(sample.json)}
-                  className="text-left p-4 border border-gray-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-colors"
-                >
+                <div key={index} className="border border-gray-200 rounded-lg p-4">
                   <h4 className="font-medium text-gray-900 mb-2">{sample.name}</h4>
-                  <p className="text-sm text-gray-600 font-mono truncate">{sample.json}</p>
-                </button>
+                  <button
+                    onClick={() => setJsonInput(sample.json)}
+                    className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                  >
+                    Use this sample
+                  </button>
+                </div>
               ))}
             </div>
           </div>

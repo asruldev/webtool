@@ -9,7 +9,7 @@ import 'prismjs/components/prism-json'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter basename="/webtool">
+    <BrowserRouter>
       <App />
     </BrowserRouter>
   </React.StrictMode>,

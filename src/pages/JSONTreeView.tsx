@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { JSONTreeView } from '@/components/JSONTreeView';
+import { SEO } from '@/components/SEO';
 
 import Editor from 'react-simple-code-editor';
 import Prism from 'prismjs';
@@ -13,6 +14,12 @@ export default function JSONTreeViewPage() {
 
   return (
     <>
+      <SEO 
+        title="JSON Tree View - Visualize JSON Data Structure"
+        description="Free online JSON tree viewer to visualize and explore JSON data structure. Interactive tree view with expandable nodes for objects and arrays."
+        keywords="JSON tree view, JSON visualizer, JSON structure viewer, JSON explorer, JSON data visualization, free JSON tools"
+        url="https://webtool.asrul.dev/tree-view"
+      />
       <Header />
       
       <main className="container mx-auto px-4 py-8">
@@ -107,29 +114,30 @@ export default function JSONTreeViewPage() {
               {[
                 {
                   name: 'Simple Object',
-                  json: '{"name":"Asrul","age":30,"city":"Indonesia"}'
+                  json: '{"name":"John","age":30,"city":"New York"}'
                 },
                 {
                   name: 'Nested Object',
-                  json: '{"user":{"name":"Asrul","profile":{"email":"asrul@example.com","verified":true}}}'
+                  json: '{"user":{"name":"Alice","profile":{"age":25,"email":"alice@example.com"}},"settings":{"theme":"dark","notifications":true}}'
                 },
                 {
                   name: 'Array of Objects',
-                  json: '[{"id":1,"name":"Alice","skills":["JavaScript","React"]},{"id":2,"name":"Bob","skills":["Python","Django"]}]'
+                  json: '[{"id":1,"name":"Product A","price":29.99},{"id":2,"name":"Product B","price":49.99}]'
                 },
                 {
                   name: 'Complex Structure',
-                  json: '{"company":"Tech Corp","departments":{"engineering":{"head":"Mike","employees":[{"name":"Alice","role":"Developer"},{"name":"Bob","role":"Designer"}]},"marketing":{"head":"Lisa","budget":50000}}}'
+                  json: '{"company":{"name":"Tech Corp","employees":[{"id":1,"name":"John","skills":["JavaScript","React"]},{"id":2,"name":"Jane","skills":["Python","Django"]}]},"projects":{"active":3,"completed":12}}'
                 }
               ].map((sample, index) => (
-                <button
-                  key={index}
-                  onClick={() => setJsonInput(sample.json)}
-                  className="text-left p-4 border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-colors"
-                >
+                <div key={index} className="border border-gray-200 rounded-lg p-4">
                   <h4 className="font-medium text-gray-900 mb-2">{sample.name}</h4>
-                  <p className="text-sm text-gray-600 font-mono truncate">{sample.json}</p>
-                </button>
+                  <button
+                    onClick={() => setJsonInput(sample.json)}
+                    className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                  >
+                    Use this sample
+                  </button>
+                </div>
               ))}
             </div>
           </div>
