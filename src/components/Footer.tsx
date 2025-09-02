@@ -29,6 +29,7 @@ export function Footer() {
               <li><Link to="/tree-view" className="text-gray-600 hover:text-blue-600 transition-colors">Tree View</Link></li>
               <li><Link to="/jwt-decoder" className="text-gray-600 hover:text-purple-600 transition-colors">JWT Decoder</Link></li>
               <li><Link to="/regex" className="text-gray-600 hover:text-blue-600 transition-colors">Regex</Link></li>
+              <li><Link to="/color-picker" className="text-gray-600 hover:text-green-600 transition-colors">Color Picker</Link></li>
             </ul>
           </div>
 
