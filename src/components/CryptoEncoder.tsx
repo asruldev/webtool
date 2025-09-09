@@ -125,7 +125,7 @@ const base64Decode = (encodedMessage: string): string => {
 
 export function CryptoEncoder({}: CryptoEncoderProps) {
   const [input, setInput] = useState('');
-  const [secret, setSecret] = useState('PKS2025!.sIC3pat');
+  const [secret, setSecret] = useState('asrulganteng');
   const [activeTab, setActiveTab] = useState<'encode' | 'decode'>('encode');
   const [showSecret, setShowSecret] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
@@ -228,7 +228,7 @@ export function CryptoEncoder({}: CryptoEncoderProps) {
 
   const handleGenerateExample = useCallback(() => {
     setInput('1757145068');
-    setSecret('PKS2025!.sIC3pat');
+    setSecret('asrulganteng');
     setSelectedAlgorithm('HMAC-SHA256');
   }, []);
 
@@ -237,7 +237,7 @@ export function CryptoEncoder({}: CryptoEncoderProps) {
   }, []);
 
   const handleResetToDefaults = useCallback(() => {
-    setSecret('PKS2025!.sIC3pat');
+    setSecret('asrulganteng');
     setSelectedAlgorithm('HMAC-SHA256');
   }, []);
 
