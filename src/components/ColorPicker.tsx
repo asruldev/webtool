@@ -174,7 +174,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ className = '' }) => {
               type="color"
               value={selectedColor}
               onChange={(e) => setHexValue(e.target.value)}
-              className="w-full h-12 rounded-lg border border-gray-300 cursor-pointer"
+              className="w-full h-12 rounded-lg border border-gray-300 cursor-pointer text-black"
             />
           </div>
         </div>
@@ -189,7 +189,8 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ className = '' }) => {
                 type="text"
                 value={hexValue}
                 onChange={(e) => setHexValue(e.target.value)}
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
+                style={{ color: 'black' }}
                 placeholder="#000000"
               />
               <button
@@ -211,11 +212,12 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ className = '' }) => {
                     type="number"
                     value={rgbValue[component]}
                     onChange={(e) => handleRgbChange(component, parseInt(e.target.value) || 0)}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
+                    style={{ color: 'black' }}
                     min="0"
                     max="255"
                   />
-                  <span className="px-2 py-2 bg-gray-100 border border-gray-300 rounded-r-lg text-sm font-mono">
+                  <span className="px-2 py-2 bg-gray-100 border border-gray-300 rounded-r-lg text-sm font-mono" style={{ color: 'black' }}>
                     {component.toUpperCase()}
                   </span>
                 </div>
@@ -224,9 +226,10 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ className = '' }) => {
             <div className="flex mt-2">
               <input
                 type="text"
+                style={{ color: 'black' }}
                 value={`rgb(${rgbValue.r}, ${rgbValue.g}, ${rgbValue.b})`}
                 readOnly
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg bg-gray-50"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg bg-gray-50 text-black"
               />
               <button
                 onClick={() => copyToClipboard(`rgb(${rgbValue.r}, ${rgbValue.g}, ${rgbValue.b})`, 'rgb')}
@@ -247,11 +250,12 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ className = '' }) => {
                     type="number"
                     value={hslValue[component]}
                     onChange={(e) => handleHslChange(component, parseInt(e.target.value) || 0)}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
                     min="0"
+                    style={{ color: 'black' }}
                     max={component === 'h' ? 360 : 100}
                   />
-                  <span className="px-2 py-2 bg-gray-100 border border-gray-300 rounded-r-lg text-sm font-mono">
+                  <span className="px-2 py-2 bg-gray-100 border border-gray-300 rounded-r-lg text-sm font-mono" style={{ color: 'black' }}>
                     {component.toUpperCase()}
                   </span>
                 </div>
@@ -262,7 +266,8 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ className = '' }) => {
                 type="text"
                 value={`hsl(${hslValue.h}, ${hslValue.s}%, ${hslValue.l}%)`}
                 readOnly
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg bg-gray-50"
+                style={{ color: 'black' }}
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg bg-gray-50 text-black"
               />
               <button
                 onClick={() => copyToClipboard(`hsl(${hslValue.h}, ${hslValue.s}%, ${hslValue.l}%)`, 'hsl')}

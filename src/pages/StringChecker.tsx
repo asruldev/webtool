@@ -1,6 +1,4 @@
 import { StringChecker } from '@/components/StringChecker';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
 import { SEO } from '@/components/SEO';
 
 export default function StringCheckerPage() {
@@ -12,9 +10,7 @@ export default function StringCheckerPage() {
         keywords="string checker, text comparison, string diff, text analyzer, character count, word count, reading time, text statistics"
         url="https://webtool.asrul.dev/string-checker"
       />
-      <Header />
-      
-      <main className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4">
         <div className="max-w-6xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-12">
@@ -30,9 +26,7 @@ export default function StringCheckerPage() {
           {/* Main String Checker Component */}
           <StringChecker />
         </div>
-      </main>
-
-      <Footer />
+      </div>
     </>
   );
 }

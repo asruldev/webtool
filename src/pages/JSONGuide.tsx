@@ -1,12 +1,8 @@
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
 
 export default function JSONGuidePage() {
   return (
     <>
-      <Header />
-      
-      <main className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-4">
@@ -64,9 +60,7 @@ export default function JSONGuidePage() {
             </div>
           </div>
         </div>
-      </main>
-
-      <Footer />
+      </div>
     </>
   );
 }

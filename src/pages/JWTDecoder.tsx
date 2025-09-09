@@ -1,5 +1,3 @@
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
 import { JWTDecoder } from '@/components/JWTDecoder';
 import { SEO } from '@/components/SEO';
 
@@ -12,9 +10,7 @@ export default function JWTDecoderPage() {
         keywords="JWT decoder, JWT encoder, JSON Web Token, JWT debugger, JWT validator, JWT generator, free JWT tools"
         url="https://webtool.asrul.dev/jwt-decoder"
       />
-      <Header />
-      
-      <main className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4">
         <div className="max-w-6xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-12">
@@ -30,9 +26,7 @@ export default function JWTDecoderPage() {
           {/* Main JWT Component */}
           <JWTDecoder />
         </div>
-      </main>
-
-      <Footer />
+      </div>
     </>
   );
 }

@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
 import { JSONTreeView } from '@/components/JSONTreeView';
 import { SEO } from '@/components/SEO';
 
@@ -20,9 +18,7 @@ export default function JSONTreeViewPage() {
         keywords="JSON tree view, JSON visualizer, JSON structure viewer, JSON explorer, JSON data visualization, free JSON tools"
         url="https://webtool.asrul.dev/tree-view"
       />
-      <Header />
-      
-      <main className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4">
         <div className="max-w-6xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-12">
@@ -142,9 +138,7 @@ export default function JSONTreeViewPage() {
             </div>
           </div>
         </div>
-      </main>
-
-      <Footer />
+      </div>
     </>
   );
 }

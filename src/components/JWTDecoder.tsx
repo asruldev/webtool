@@ -396,7 +396,7 @@ export function JWTDecoder({ syntaxStyle }: JWTDecoderProps) {
                     type={showSecret ? 'text' : 'password'}
                     value={secret}
                     onChange={(e) => setSecret(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                     placeholder="Enter secret to verify signature..."
                   />
                   <button
@@ -625,7 +625,7 @@ export function JWTDecoder({ syntaxStyle }: JWTDecoderProps) {
                       type={showSecret ? 'text' : 'password'}
                       value={secret}
                       onChange={(e) => setSecret(e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                       placeholder={
                         selectedAlgorithm.startsWith('HS') ? 'Enter secret key...' :
                         selectedAlgorithm.startsWith('RS') || selectedAlgorithm.startsWith('ES') ? 'Enter private key (PEM format)...' :

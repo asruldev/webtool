@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import { Layout } from './components/Layout'
 import Home from './pages/Home'
 import JSONFormatter from './pages/JSONFormatter'
 import JSONValidator from './pages/JSONValidator'
@@ -16,8 +17,8 @@ import Terms from './pages/Terms'
 
 function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      <ErrorBoundary>
+    <ErrorBoundary>
+      <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/json-formatter" element={<JSONFormatter />} />
@@ -33,8 +34,8 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<Terms />} />
         </Routes>
-      </ErrorBoundary>
-    </div>
+      </Layout>
+    </ErrorBoundary>
   )
 }
 

@@ -1,6 +1,4 @@
 import { ColorPicker } from '@/components/ColorPicker';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
 import { SEO } from '@/components/SEO';
 
 export default function ColorPickerPage() {
@@ -12,9 +10,7 @@ export default function ColorPickerPage() {
         keywords="color picker, color converter, hex to rgb, rgb to hex, hsl converter, color palette, free color tools"
         url="https://webtool.asrul.dev/color-picker"
       />
-      <Header />
-      
-      <main className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4">
         <div className="max-w-6xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-12">
@@ -29,9 +25,7 @@ export default function ColorPickerPage() {
           {/* Main Color Picker Component */}
           <ColorPicker />
         </div>
-      </main>
-
-      <Footer />
+      </div>
     </>
   );
 }

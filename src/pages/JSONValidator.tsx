@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
 import { JSONValidator } from '@/components/JSONValidator';
 import { SEO } from '@/components/SEO';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -21,9 +19,7 @@ export default function JSONValidatorPage() {
         keywords="JSON validator, JSON syntax checker, validate JSON, JSON error checker, JSON lint, free JSON tools"
         url="https://webtool.asrul.dev/validator"
       />
-      <Header />
-      
-      <main className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4">
         <div className="max-w-6xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-12">
@@ -120,9 +116,7 @@ export default function JSONValidatorPage() {
             </div>
           </div>
         </div>
-      </main>
-
-      <Footer />
+      </div>
     </>
   );
 }
