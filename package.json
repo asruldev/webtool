@@ -11,9 +11,19 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "deploy": "pnpm build && gh-pages -d dist",
     "deploy-only": "gh-pages -d dist",
-    "predeploy": "pnpm build"
+    "predeploy": "pnpm build",
+    "version:patch": "npm version patch --no-git-tag-version",
+    "version:minor": "npm version minor --no-git-tag-version",
+    "version:major": "npm version major --no-git-tag-version",
+    "release:patch": "pnpm version:patch && pnpm build && git add . && git commit -m 'chore: bump version to v$(node -p \"require('./package.json').version\")' && git tag v$(node -p \"require('./package.json').version\") && git push && git push --tags",
+    "release:minor": "pnpm version:minor && pnpm build && git add . && git commit -m 'chore: bump version to v$(node -p \"require('./package.json').version\")' && git tag v$(node -p \"require('./package.json').version\") && git push && git push --tags",
+    "release:major": "pnpm version:major && pnpm build && git add . && git commit -m 'chore: bump version to v$(node -p \"require('./package.json').version\")' && git tag v$(node -p \"require('./package.json').version\") && git push && git push --tags",
+    "push:deploy": "git add . && git commit -m 'feat: add crypto encoder/decoder tool' && git push",
+    "tag:release": "git tag v$(node -p \"require('./package.json').version\") && git push --tags"
   },
   "dependencies": {
+    "@types/crypto-js": "^4.2.2",
+    "crypto-js": "^4.2.0",
     "prismjs": "^1.30.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

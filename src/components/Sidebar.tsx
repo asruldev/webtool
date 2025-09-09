@@ -25,7 +25,7 @@ export function Sidebar({ onClose }: SidebarProps) {
   };
 
   // Function to get active styles
-  const getActiveStyles = (path: string, isRegex = false, isJWT = false, isColor = false, isString = false) => {
+  const getActiveStyles = (path: string, isRegex = false, isJWT = false, isColor = false, isString = false, isCrypto = false) => {
     const active = isActive(path);
     const baseStyles = "flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 group relative";
     const activeStyles = isRegex 
@@ -36,6 +36,8 @@ export function Sidebar({ onClose }: SidebarProps) {
       ? "bg-green-50 text-green-600 font-semibold border-l-4 border-green-600 shadow-sm"
       : isString
       ? "bg-orange-50 text-orange-600 font-semibold border-l-4 border-orange-600 shadow-sm"
+      : isCrypto
+      ? "bg-indigo-50 text-indigo-600 font-semibold border-l-4 border-indigo-600 shadow-sm"
       : "bg-blue-50 text-blue-600 font-semibold border-l-4 border-blue-600 shadow-sm";
     const inactiveStyles = "text-gray-700 hover:bg-gray-50 hover:text-gray-900 hover:shadow-sm";
     
@@ -88,6 +90,12 @@ export function Sidebar({ onClose }: SidebarProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         );
+      case '/crypto-encoder':
+        return (
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        );
       default:
         return (
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,6 +113,7 @@ export function Sidebar({ onClose }: SidebarProps) {
     { path: '/regex', label: 'Regex Tester', keywords: ['regex', 'regular', 'expression', 'test', 'pattern'], isRegex: true },
     { path: '/color-picker', label: 'Color Picker', keywords: ['color', 'picker', 'hex', 'rgb', 'hsl', 'converter'], isColor: true },
     { path: '/string-checker', label: 'String Checker', keywords: ['string', 'checker', 'compare', 'diff', 'text'], isString: true },
+    { path: '/crypto-encoder', label: 'Crypto Encoder', keywords: ['crypto', 'encoder', 'decoder', 'hmac', 'sha256', 'aes', 'encrypt', 'decrypt'], isCrypto: true },
   ];
 
   // Filter menu items based on search term
@@ -178,7 +187,7 @@ export function Sidebar({ onClose }: SidebarProps) {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={getActiveStyles(item.path, item.isRegex, item.isJWT, item.isColor, item.isString)}
+                  className={getActiveStyles(item.path, item.isRegex, item.isJWT, item.isColor, item.isString, item.isCrypto)}
                   onClick={handleClose}
                 >
                   {getIcon(item.path)}
