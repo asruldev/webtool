@@ -6,7 +6,7 @@ interface SidebarProps {
   onClose: () => void;
 }
 
-export function Sidebar({ isOpen, onClose }: SidebarProps) {
+export function Sidebar({ onClose }: SidebarProps) {
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
 
