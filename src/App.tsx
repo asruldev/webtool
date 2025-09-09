@@ -9,6 +9,7 @@ import RegexTester from './pages/RegexTester'
 import RegexGuide from './pages/RegexGuide'
 import JSONGuide from './pages/JSONGuide'
 import ColorPicker from './pages/ColorPicker'
+import StringChecker from './pages/StringChecker'
 
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import Terms from './pages/Terms'
@@ -27,6 +28,7 @@ function App() {
           <Route path="/regex-guide" element={<RegexGuide />} />
           <Route path="/json-guide" element={<JSONGuide />} />
           <Route path="/color-picker" element={<ColorPicker />} />
+          <Route path="/string-checker" element={<StringChecker />} />
 
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<Terms />} />

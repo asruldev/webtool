@@ -14,7 +14,7 @@ export function Header() {
   };
 
   // Function to get active styles
-  const getActiveStyles = (path: string, isRegex = false, isJWT = false, isColor = false) => {
+  const getActiveStyles = (path: string, isRegex = false, isJWT = false, isColor = false, isString = false) => {
     const active = isActive(path);
     const baseStyles = "transition-colors relative";
     const activeStyles = isRegex 
@@ -23,6 +23,8 @@ export function Header() {
       ? "text-purple-600 font-semibold"
       : isColor
       ? "text-green-600 font-semibold"
+      : isString
+      ? "text-orange-600 font-semibold"
       : "text-blue-600 font-semibold";
     const inactiveStyles = isRegex 
       ? "text-gray-700 hover:text-pink-600" 
@@ -30,13 +32,15 @@ export function Header() {
       ? "text-gray-700 hover:text-purple-600"
       : isColor
       ? "text-gray-700 hover:text-green-600"
+      : isString
+      ? "text-gray-700 hover:text-orange-600"
       : "text-gray-700 hover:text-blue-600";
     
     return `${baseStyles} ${active ? activeStyles : inactiveStyles}`;
   };
 
   // Function to get active indicator
-  const getActiveIndicator = (path: string, isRegex = false, isJWT = false, isColor = false) => {
+  const getActiveIndicator = (path: string, isRegex = false, isJWT = false, isColor = false, isString = false) => {
     const active = isActive(path);
     if (!active) return null;
     
@@ -46,6 +50,8 @@ export function Header() {
       ? "from-purple-600 to-pink-600"
       : isColor
       ? "from-green-600 to-teal-600"
+      : isString
+      ? "from-orange-600 to-red-600"
       : "from-blue-600 to-purple-600";
     
     return (
@@ -92,6 +98,10 @@ export function Header() {
             <Link to="/color-picker" className={getActiveStyles('/color-picker', false, false, true)}>
               Color Picker
               {getActiveIndicator('/color-picker', false, false, true)}
+            </Link>
+            <Link to="/string-checker" className={getActiveStyles('/string-checker', false, false, false, true)}>
+              String Checker
+              {getActiveIndicator('/string-checker', false, false, false, true)}
             </Link>
           </nav>
 
@@ -167,6 +177,13 @@ export function Header() {
                 onClick={() => setMobileOpen(false)}
               >
                 Color Picker
+              </Link>
+              <Link 
+                to="/string-checker" 
+                className={getActiveStyles('/string-checker', false, false, false, true)} 
+                onClick={() => setMobileOpen(false)}
+              >
+                String Checker
               </Link>
             </nav>
           </div>
