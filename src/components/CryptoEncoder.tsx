@@ -1,14 +1,12 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Editor from 'react-simple-code-editor';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-json';
-import { FiCopy, FiRefreshCw, FiEye, FiEyeOff, FiInfo, FiShield } from 'react-icons/fi';
+import { FiCopy, FiEye, FiEyeOff, FiShield } from 'react-icons/fi';
 import CryptoJS from 'crypto-js';
 
 interface CryptoEncoderProps {
-  syntaxStyle?: any;
+  // Props can be added here if needed in the future
 }
 
 interface CryptoResult {
@@ -125,14 +123,13 @@ const base64Decode = (encodedMessage: string): string => {
   }
 };
 
-export function CryptoEncoder({ syntaxStyle }: CryptoEncoderProps) {
+export function CryptoEncoder({}: CryptoEncoderProps) {
   const [input, setInput] = useState('');
   const [secret, setSecret] = useState('PKS2025!.sIC3pat');
   const [activeTab, setActiveTab] = useState<'encode' | 'decode'>('encode');
   const [showSecret, setShowSecret] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState('HMAC-SHA256');
-  const [result, setResult] = useState('');
 
   const cryptoResult = useMemo((): CryptoResult => {
     if (!input.trim()) {
@@ -237,7 +234,6 @@ export function CryptoEncoder({ syntaxStyle }: CryptoEncoderProps) {
 
   const handleClear = useCallback(() => {
     setInput('');
-    setResult('');
   }, []);
 
   const handleResetToDefaults = useCallback(() => {
@@ -266,10 +262,6 @@ export function CryptoEncoder({ syntaxStyle }: CryptoEncoderProps) {
     return algorithm.startsWith('HMAC-') || algorithm.startsWith('AES-');
   };
 
-  const isEncodingOperation = (algorithm: string): boolean => {
-    return algorithm.includes('Encode') || algorithm.includes('Encrypt') || 
-           algorithm.includes('SHA') || algorithm.includes('MD5') || algorithm.includes('HMAC');
-  };
 
   return (
     <div className="space-y-6">
